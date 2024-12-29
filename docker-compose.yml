@@ -1,0 +1,30 @@
+services:
+  web:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=${MONGO_URI}
+    ports:
+      - "3000:8080"
+      - "5000:8081"
+    networks:
+      - app-network
+  db:
+    image: mongo
+    restart: always
+    volumes:
+      - /mongodb_data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
